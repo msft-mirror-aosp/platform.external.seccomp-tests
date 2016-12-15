@@ -6,4 +6,7 @@ Description: Mirror of Linux kernel seccomp test suite, run in CTS.
 See README.md for information on how to update this repository.
 
 Local Modifications:
-None.
+- Remove usage of pthread_cancel()
+- Use __android_log_print() instead of fprintf()
+- Rename main() to seccomp_test_main()
+- Add get_seccomp_test_list()

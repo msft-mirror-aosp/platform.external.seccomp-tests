@@ -1613,7 +1613,7 @@ FIXTURE_TEARDOWN(TSYNC)
 		if (!s->tid)
 			continue;
 		if (pthread_kill(s->tid, 0)) {
-			pthread_cancel(s->tid);
+			//pthread_cancel(s->tid);  // ANDROID
 			pthread_join(s->tid, &status);
 		}
 	}
@@ -2105,5 +2105,11 @@ TEST(syscall_restart)
  * - arch value testing (x86 modes especially)
  * - ...
  */
+
+// ANDROID:begin
+struct __test_metadata* get_seccomp_test_list() {
+  return __test_list;
+}
+// ANDROID:end
 
 TEST_HARNESS_MAIN
