@@ -49,6 +49,8 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+#include <android/log.h>  // ANDROID
+
 /* All exported functionality should be declared through this macro. */
 #define TEST_API(x) _##x
 
@@ -206,9 +208,11 @@
 } while (0)
 
 /* Unconditional logger for internal use. */
+// ANDROID:begin
 #define __TH_LOG(fmt, ...) \
-		fprintf(TH_LOG_STREAM, "%s:%d:%s:" fmt "\n", \
+		__android_log_print(ANDROID_LOG_ERROR, "SeccompBpfTest-KernelUnit", "%s:%d:%s:" fmt "\n", \
 			__FILE__, __LINE__, _metadata->name, ##__VA_ARGS__)
+// ANDROID:end
 
 /* Defines the test function and creates the registration stub. */
 #define _TEST(test_name) __TEST_IMPL(test_name, -1)
@@ -301,7 +305,7 @@
 		if (!__constructor_order) \
 			__constructor_order = _CONSTRUCTOR_ORDER_BACKWARD; \
 	} \
-	int main(int argc, char **argv) { \
+	int seccomp_test_main(int argc, char **argv) { /* ANDROID */ \
 		return test_harness_run(argc, argv); \
 	}
 
