@@ -10,6 +10,9 @@ Rather than hold the entire Linux history in this repository, only the subdirect
 selftests are preserved here. In order to sync this repository to the upstream Linux, follow these
 instructions.
 
+The pristine copy of the upstream source is kept on a branch called upstream-master. This branch is
+then merged into an Android development branch.
+
 ### First-Time Setup
 
 These instructions only need to be followed for the first time you are updating the repository from
@@ -39,15 +42,25 @@ Perform these steps every time you need to update the test suite from upstream.
     git filter-branch --subdirectory-filter tools/testing/selftests/seccomp
     ```
 
-4. Start a new CL branch into which the updated sources will be merged:
+4. Check out the upstream-master branch, which contains the pristine, filter-branch'd copy of the
+source code. Pushing non-merge commits with a "forged" author/committer can only be done against
+the upstream-master branch.
     ```
-    repo start sync-upstream .
+    git checkout -b upstream-master aosp/upstream-master
     ````
 
-5. Subtree-merge the changes into the directory. Resolve any conflicts with the local modifications
-present in the repository.
+5. Update this upstream-master branch to the newly filtered branch of upstream-linux.
     ```
-    git subtree merge -P linux/ update-YYYYMMDD
+    git merge --ff-only update-YYYYMMDD
+    ```
+
+6. Upload the changes on upstream-master for review and submit them.
+
+7. Merge the changes from upstream-master into the Android development branch (typically master).
+Resolve any conflicts with the local modifications present in the repository.
+    ```
+    repo start sync-upstream .
+    git subtree merge -P linux/ upstream-master
     ```
 
 Now build and test the changes by running CTS:
