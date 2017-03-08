@@ -10,3 +10,4 @@ Local Modifications:
 - Use __android_log_print() instead of fprintf()
 - Rename main() to seccomp_test_main()
 - Add get_seccomp_test_list()
+- Fix pthread_join bug (https://android-review.googlesource.com/#/c/349407)
