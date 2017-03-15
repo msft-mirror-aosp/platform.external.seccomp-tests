@@ -1845,8 +1845,10 @@ TEST_F(TSYNC, two_siblings_with_ancestor)
 	/* Ensure they are both killed and don't exit cleanly. */
 	pthread_join(self->sibling[0].tid, &status);
 	EXPECT_EQ(0x0, (long)status);
+	self->sibling[0].tid = 0;
 	pthread_join(self->sibling[1].tid, &status);
 	EXPECT_EQ(0x0, (long)status);
+	self->sibling[1].tid = 0;
 }
 
 TEST_F(TSYNC, two_sibling_want_nnp)
@@ -1911,8 +1913,10 @@ TEST_F(TSYNC, two_siblings_with_no_filter)
 	/* Ensure they are both killed and don't exit cleanly. */
 	pthread_join(self->sibling[0].tid, &status);
 	EXPECT_EQ(0x0, (long)status);
+	self->sibling[0].tid = 0;
 	pthread_join(self->sibling[1].tid, &status);
 	EXPECT_EQ(0x0, (long)status);
+	self->sibling[1].tid = 0;
 }
 
 TEST_F(TSYNC, two_siblings_with_one_divergence)
@@ -1956,8 +1960,10 @@ TEST_F(TSYNC, two_siblings_with_one_divergence)
 	/* Ensure they are both unkilled. */
 	pthread_join(self->sibling[0].tid, &status);
 	EXPECT_EQ(SIBLING_EXIT_UNKILLED, (long)status);
+	self->sibling[0].tid = 0;
 	pthread_join(self->sibling[1].tid, &status);
 	EXPECT_EQ(SIBLING_EXIT_UNKILLED, (long)status);
+	self->sibling[1].tid = 0;
 }
 
 TEST_F(TSYNC, two_siblings_not_under_filter)
@@ -2015,6 +2021,7 @@ TEST_F(TSYNC, two_siblings_not_under_filter)
 	pthread_mutex_unlock(&self->mutex);
 	pthread_join(self->sibling[sib].tid, &status);
 	EXPECT_EQ(SIBLING_EXIT_UNKILLED, (long)status);
+	self->sibling[sib].tid = 0;
 	/* Poll for actual task death. pthread_join doesn't guarantee it. */
 	while (!kill(self->sibling[sib].system_tid, 0))
 		sleep(0.1);
@@ -2040,6 +2047,7 @@ TEST_F(TSYNC, two_siblings_not_under_filter)
 	pthread_mutex_unlock(&self->mutex);
 	pthread_join(self->sibling[sib].tid, &status);
 	EXPECT_EQ(0, (long)status);
+	self->sibling[sib].tid = 0;
 	/* Poll for actual task death. pthread_join doesn't guarantee it. */
 	while (!kill(self->sibling[sib].system_tid, 0))
 		sleep(0.1);
