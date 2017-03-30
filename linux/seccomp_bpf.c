@@ -1803,8 +1803,10 @@ TEST_F(TSYNC, siblings_fail_prctl)
 	/* Ensure diverging sibling failed to call prctl. */
 	pthread_join(self->sibling[0].tid, &status);
 	EXPECT_EQ(SIBLING_EXIT_FAILURE, (long)status);
+	self->sibling[0].tid = 0;
 	pthread_join(self->sibling[1].tid, &status);
 	EXPECT_EQ(SIBLING_EXIT_UNKILLED, (long)status);
+	self->sibling[1].tid = 0;
 }
 
 TEST_F(TSYNC, two_siblings_with_ancestor)
