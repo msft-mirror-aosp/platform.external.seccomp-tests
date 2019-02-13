@@ -25,7 +25,10 @@ cc_library_static {
         },
     },
 
-    srcs: ["linux/seccomp_bpf.c"],
+    srcs: [
+       "linux/seccomp_bpf.c",
+       "seccomp_bpf_tests.c",
+    ],
 
     cflags: [
         "-Wall",
@@ -36,6 +39,7 @@ cc_library_static {
         "-Wno-incompatible-pointer-types-discards-qualifiers",
         "-Wno-sign-compare",
         "-Wno-empty-body",
+        "-Wno-unused-function",
         // TODO(rsesek): Remove after syncing in upstream.
         "-D__ARCH_WANT_SYSCALL_DEPRECATED",
     ],
