@@ -15,16 +15,6 @@
 cc_library_static {
     name: "external_seccomp_tests",
 
-    // mips and mips64 don't support Seccomp.
-    arch: {
-        mips: {
-            enabled: false,
-        },
-        mips64: {
-            enabled: false,
-        },
-    },
-
     srcs: [
        "linux/seccomp_bpf.c",
        "seccomp_bpf_tests.c",
